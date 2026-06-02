@@ -1562,6 +1562,8 @@ def main():
             logger.debug(traceback.format_exc())
     finally:
         cleanup_tmp_dir()
+        if sys.stdin.isatty():
+            input("\n按 Enter 键退出...")
 
 
 if __name__ == "__main__":

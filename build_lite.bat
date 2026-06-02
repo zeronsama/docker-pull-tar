@@ -1,26 +1,25 @@
 @echo off
-chcp 65001 >nul
 echo ========================================
-echo Docker Image Puller ç²¾ç®€æ‰“åŒ…è„šæœ¬
+echo Docker Image Puller ¾«¼ò´ò°ü½Å±¾
 echo ========================================
 
 echo.
-echo [1/3] æ£€æŸ¥ Python ç¯å¢ƒ...
+echo [1/3] ¼ì²é Python »·¾³...
 python --version
 if errorlevel 1 (
-    echo é”™è¯¯: æœªæ‰¾åˆ° Pythonï¼Œè¯·å…ˆå®‰è£… Python
+    echo ´íÎó: Î´ÕÒµ½ Python£¬ÇëÏÈ°²×° Python
     pause
     exit /b 1
 )
 
 echo.
-echo [2/3] æ¸…ç†æ—§çš„æ„å»ºæ–‡ä»¶...
+echo [2/3] ÇåÀí¾ÉµÄ¹¹½¨ÎÄ¼ş...
 if exist "build" rmdir /s /q "build"
 if exist "dist" rmdir /s /q "dist"
 if exist "DockerPull.spec" del /q "DockerPull.spec"
 
 echo.
-echo [3/3] å¼€å§‹ç²¾ç®€æ‰“åŒ…...
+echo [3/3] ¿ªÊ¼¾«¼ò´ò°ü...
 pyinstaller --onefile ^
     --name DockerPull ^
     --icon favicon.ico ^
@@ -60,31 +59,31 @@ pyinstaller --onefile ^
     --exclude-module test ^
     --exclude-module tests ^
     --exclude-module unittest ^
-    docker_image_puller.py
+    harbor_puller_cache.py
 
 if errorlevel 1 (
     echo.
-    echo âŒ æ‰“åŒ…å¤±è´¥ï¼
+    echo ? ´ò°üÊ§°Ü£¡
     pause
     exit /b 1
 )
 
 echo.
 echo ========================================
-echo âœ… æ‰“åŒ…å®Œæˆï¼
-echo è¾“å‡ºæ–‡ä»¶: dist\DockerPull.exe
-for %%I in (dist\DockerPull.exe) do echo æ–‡ä»¶å¤§å°: %%~zI å­—èŠ‚ (çº¦ %%~zI / 1048576 MB)
+echo ? ´ò°üÍê³É£¡
+echo Êä³öÎÄ¼ş: dist\DockerPull.exe
+for %%I in (dist\DockerPull.exe) do echo ÎÄ¼ş´óĞ¡: %%~zI ×Ö½Ú (Ô¼ %%~zI / 1048576 MB)
 echo ========================================
 echo.
 
-echo æ˜¯å¦å‹ç¼©å‘å¸ƒï¼Ÿ(y/n)
+echo ÊÇ·ñÑ¹Ëõ·¢²¼£¿(y/n)
 set /p compress=
 if /i "%compress%"=="y" (
     echo.
-    echo å‹ç¼©æ–‡ä»¶...
+    echo Ñ¹ËõÎÄ¼ş...
     if exist "DockerPull.zip" del /q "DockerPull.zip"
     powershell Compress-Archive -Path "dist\DockerPull.exe" -DestinationPath "DockerPull.zip"
-    echo âœ… å·²åˆ›å»º DockerPull.zip
+    echo ? ÒÑ´´½¨ DockerPull.zip
 )
 
 echo.
