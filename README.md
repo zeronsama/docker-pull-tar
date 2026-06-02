@@ -1,5 +1,33 @@
 # Docker Image Puller
 
+新增 `harbor_puller_cache.py`
+
+1. 支持harbor仓库
+   ```py
+   parser.add_argument("--harbor-url", default="https://release.repo:5000", help="Harbor 服务地址")
+   parser.add_argument("--harbor-user", default="guest", help="Harbor 用户名")
+   parser.add_argument("--harbor-password", default="Guest123!", help="Harbor 密码")
+   parser.add_argument("--harbor-token", help="Harbor Token")
+   ```
+2. 支持layer复用
+   ```py
+   parser.add_argument("--layer-cache", default="./layer_cache", help="全局层缓存目录（默认 ./layer_cache）",)
+   parser.add_argument("--images-dir", default="./images", help="最终 tar 文件的存放目录（默认 ./images）",)
+   ```
+
+使用方法
+```sh
+python harbor_puller_cache.py
+```
+
+- vibe coding
+- 尚不确定在Windows环境下打包layer会对镜像造成什么影响，如果拉取的镜像有问题请使用`docker pull`命令拉取镜像
+
+----
+_原项目说明_
+
+# Docker Image Puller
+
 ## 项目简介
 
 Docker Image Puller 是一个方便的工具，用于从 Docker 仓库拉取镜像，支持断点续传、多架构选择。该工具采用 MIT 许可证，开放源代码，方便用户根据需要进行定制和扩展。
@@ -222,20 +250,20 @@ DockerPull.exe -i nginx:latest -o ./downloads
 
 ## 内网 Docker 导入方法
 
-1. **拉取镜像并打包**  
+1. **拉取镜像并打包**
    使用本工具拉取镜像并生成 `.tar` 文件，例如 `library_alpine_latest_amd64.tar`。
 
-2. **将 `.tar` 文件传输到内网机器**  
+2. **将 `.tar` 文件传输到内网机器**
    通过 U 盘、内网文件服务器或其他方式将 `.tar` 文件传输到目标机器。
 
-3. **导入镜像到 Docker**  
+3. **导入镜像到 Docker**
    在内网机器上运行以下命令导入镜像：
 
    ```bash
    docker load -i library_alpine_latest_amd64.tar
    ```
 
-4. **验证镜像**  
+4. **验证镜像**
    导入完成后，运行以下命令查看镜像：
 
    ```bash
@@ -292,22 +320,22 @@ DockerPull.exe -i nginx:latest -o ./downloads
 
 ## 常见问题
 
-**Q**: 如何配置国内镜像源？  
+**Q**: 如何配置国内镜像源？
 **A**: 使用 `-r` 参数指定仓库地址，或设置环境变量 `HTTP_PROXY` / `HTTPS_PROXY`。
 
-**Q**: 支持哪些架构？  
+**Q**: 支持哪些架构？
 **A**: 支持 Docker Hub 上所有 Linux 架构，常见：`amd64`、`arm64`、`armv7` 等。工具会自动列出可用架构供选择。
 
-**Q**: 是否需要安装 Docker 或 Python？  
+**Q**: 是否需要安装 Docker 或 Python？
 **A**: 不需要！直接下载 `DockerPull.exe` 即可运行。
 
-**Q**: 如何在内网中使用？  
+**Q**: 如何在内网中使用？
 **A**: 使用本工具拉取镜像并生成 `.tar` 文件，然后通过 `docker load` 命令导入内网机器。
 
-**Q**: 下载中断了怎么办？  
+**Q**: 下载中断了怎么办？
 **A**: 直接再次运行相同命令，工具会自动从断点继续下载。
 
-**Q**: 如何指定下载目录？  
+**Q**: 如何指定下载目录？
 **A**: 使用 `-o` 参数指定，例如 `DockerPull.exe -i nginx:latest -o ./downloads`。
 
 ---
